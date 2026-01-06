@@ -122,22 +122,27 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
+    font-size: 13px;
 }
 
 thead {
     background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 th {
-    padding: 12px;
+    padding: 10px 8px;
     text-align: left;
     font-weight: 600;
     color: #555;
     border-bottom: 2px solid #ddd;
+    font-size: 12px;
 }
 
 td {
-    padding: 12px;
+    padding: 10px 8px;
     border-bottom: 1px solid #eee;
 }
 
