@@ -328,6 +328,7 @@ window.onload = function() {
 function resetAllData() {
     if (confirm('Are you sure you want to reset ALL data? This cannot be undone!')) {
         localStorage.clear();
+        auctionItemCounter = 1;
         initializeSampleData();
     }
 }
