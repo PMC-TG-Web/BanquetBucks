@@ -347,55 +347,9 @@ window.onload = function() {
     } else {
         renderAll();
     }
-    
-    // Add scroll listener for rolodex effect
-    setupRolodexEffect();
 }
 
-// Setup rolodex scroll effect
-function setupRolodexEffect() {
-    const section = document.querySelector('.section');
-    if (!section) return;
-    
-    section.addEventListener('scroll', updateCenterRow);
-    // Initial call
-    updateCenterRow();
-}
 
-// Update center row highlighting
-function updateCenterRow() {
-    const section = document.querySelector('.section');
-    const tbody = document.getElementById('participantsBody');
-    if (!section || !tbody) return;
-    
-    const rows = tbody.querySelectorAll('tr');
-    const sectionRect = section.getBoundingClientRect();
-    const centerY = sectionRect.top + sectionRect.height / 2;
-    
-    rows.forEach(row => {
-        const rect = row.getBoundingClientRect();
-        const rowCenterY = rect.top + rect.height / 2;
-        const distance = centerY - rowCenterY;
-        const absDistance = Math.abs(distance);
-        
-        // Remove all classes first
-        row.classList.remove('center-row', 'fade-row');
-        
-        // Calculate scale based on distance from center
-        const maxDistance = 300;
-        const normalizedDistance = Math.min(absDistance / maxDistance, 1);
-        const scale = 1 - (normalizedDistance * 0.15); // Scale from 1.0 to 0.85
-        
-        // Apply simple transform for rolodex effect
-        row.style.transform = `scale(${scale})`;
-        row.style.opacity = 1 - (normalizedDistance * 0.4); // Fade out distant rows
-        
-        // Add fade class to rows far from center
-        if (absDistance > 150) {
-            row.classList.add('fade-row');
-        }
-    });
-}
 }
 
 // Reset all data
