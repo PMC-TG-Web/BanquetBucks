@@ -1,32 +1,42 @@
 // Data storage
 let participants = [];
-let items = [];
-let currentFilter = 'all';
-let currentItemIndex = null;
 
 // Initialize with sample data
 function initializeSampleData() {
-    // Sample participants
+    // Real participants from employee list
     participants = [
-        { name: "John Smith", bucks: 100 },
-        { name: "Jane Doe", bucks: 100 },
-        { name: "Bob Johnson", bucks: 100 },
-        { name: "Alice Williams", bucks: 100 },
-        { name: "Charlie Brown", bucks: 100 }
-    ];
-
-    // Sample auction items
-    items = [
-        { name: "Dinner for Two at Luigi's Restaurant", price: 50, status: "available", winner: null },
-        { name: "Weekend Getaway Package", price: 150, status: "available", winner: null },
-        { name: "Spa Day Gift Certificate", price: 75, status: "available", winner: null },
-        { name: "Concert Tickets (2)", price: 100, status: "available", winner: null },
-        { name: "Golf Foursome", price: 120, status: "available", winner: null },
-        { name: "Wine Tasting Tour", price: 80, status: "available", winner: null },
-        { name: "Cooking Class for Two", price: 60, status: "available", winner: null },
-        { name: "Professional Photo Session", price: 90, status: "available", winner: null },
-        { name: "Theater Season Tickets", price: 200, status: "available", winner: null },
-        { name: "Gym Membership (6 months)", price: 85, status: "available", winner: null }
+        { name: "Alvin Huyard", hireDate: "11/13/2017", years: 8.15, bucks: 70 },
+        { name: "Ben Zook", hireDate: "2/27/2023", years: 2.86, bucks: 20 },
+        { name: "Dan Hess", hireDate: "6/17/2019", years: 6.56, bucks: 60 },
+        { name: "Danny Hess (Son)", hireDate: "3/18/2024", years: 1.81, bucks: 10 },
+        { name: "Danny Jones", hireDate: "5/24/2018", years: 7.63, bucks: 70 },
+        { name: "Dave Barrett", hireDate: "5/2/2022", years: 3.68, bucks: 30 },
+        { name: "Ervin Stoltzfus", hireDate: "3/27/2023", years: 2.78, bucks: 20 },
+        { name: "Francisco \"Poncho\" Romero", hireDate: "6/24/2024", years: 1.54, bucks: 10 },
+        { name: "Isaac Stoltzfus, Jr.", hireDate: "12/4/2012", years: 13.10, bucks: 120 },
+        { name: "Ivan Zavaleta", hireDate: "3/4/2024", years: 1.84, bucks: 10 },
+        { name: "James King", hireDate: "1/30/2023", years: 2.94, bucks: 20 },
+        { name: "Jane Dropeskey", hireDate: "8/21/2023", years: 2.38, bucks: 20 },
+        { name: "Japheth King", hireDate: "7/14/2025", years: 0.48, bucks: 5 },
+        { name: "Jason Stoltzfus", hireDate: "4/1/2019", years: 6.77, bucks: 60 },
+        { name: "John King", hireDate: "3/26/2024", years: 1.78, bucks: 10 },
+        { name: "Jose Alpizar", hireDate: "5/13/2024", years: 1.65, bucks: 10 },
+        { name: "Jose Ivan Cruz", hireDate: "9/9/2024", years: 1.33, bucks: 10 },
+        { name: "Joseph Beiler", hireDate: "8/31/2020", years: 5.35, bucks: 50 },
+        { name: "Joshua Quidroz", hireDate: "7/24/2023", years: 2.46, bucks: 20 },
+        { name: "Lee Zook", hireDate: "8/4/2025", years: 0.42, bucks: 5 },
+        { name: "Logan Spence", hireDate: "10/7/2024", years: 1.25, bucks: 10 },
+        { name: "Matt Beiler", hireDate: "6/15/2020", years: 5.56, bucks: 50 },
+        { name: "Matthew King", hireDate: "11/6/2018", years: 7.17, bucks: 60 },
+        { name: "Mervin Allgyer", hireDate: "3/16/2015", years: 10.82, bucks: 100 },
+        { name: "Moses Zook", hireDate: "5/16/2022", years: 3.65, bucks: 30 },
+        { name: "Omar Garcia Cruz", hireDate: "9/23/2024", years: 1.29, bucks: 10 },
+        { name: "Omar Stoltzfus", hireDate: "4/27/2017", years: 8.70, bucks: 80 },
+        { name: "Raymond King", hireDate: "4/23/2019", years: 6.71, bucks: 60 },
+        { name: "Scott Swinehart", hireDate: "10/28/2013", years: 12.20, bucks: 110 },
+        { name: "Shelly Swinehart", hireDate: "3/11/2015", years: 10.83, bucks: 100 },
+        { name: "Todd Gilmore", hireDate: "9/2/2025", years: 0.35, bucks: 5 },
+        { name: "William Stoltzfus", hireDate: "6/14/2021", years: 4.57, bucks: 40 }
     ];
 
     saveData();
@@ -36,11 +46,9 @@ function initializeSampleData() {
 // Load data from localStorage
 function loadData() {
     const savedParticipants = localStorage.getItem('participants');
-    const savedItems = localStorage.getItem('items');
     
-    if (savedParticipants && savedItems) {
+    if (savedParticipants) {
         participants = JSON.parse(savedParticipants);
-        items = JSON.parse(savedItems);
         return true;
     }
     return false;
@@ -49,16 +57,19 @@ function loadData() {
 // Save data to localStorage
 function saveData() {
     localStorage.setItem('participants', JSON.stringify(participants));
-    localStorage.setItem('items', JSON.stringify(items));
 }
 
 // Add a participant
 function addParticipant() {
     const nameInput = document.getElementById('participantName');
+    const hireDateInput = document.getElementById('hireDate');
+    const yearsInput = document.getElementById('yearsEmployed');
     const bucksInput = document.getElementById('initialBucks');
     
     const name = nameInput.value.trim();
-    const bucks = parseInt(bucksInput.value) || 100;
+    const hireDate = hireDateInput.value.trim();
+    const years = parseFloat(yearsInput.value) || 0;
+    const bucks = parseInt(bucksInput.value) || 10;
     
     if (name === '') {
         alert('Please enter a participant name');
@@ -71,14 +82,16 @@ function addParticipant() {
         return;
     }
     
-    participants.push({ name, bucks });
+    participants.push({ name, hireDate, years, bucks });
     saveData();
     renderParticipants();
     updateStats();
     
     // Clear inputs
     nameInput.value = '';
-    bucksInput.value = '100';
+    hireDateInput.value = '';
+    yearsInput.value = '';
+    bucksInput.value = '10';
 }
 
 // Adjust participant bucks
@@ -119,6 +132,8 @@ function renderParticipants() {
         const row = tbody.insertRow();
         row.innerHTML = `
             <td><strong>${participant.name}</strong></td>
+            <td>${participant.hireDate || '-'}</td>
+            <td>${participant.years ? participant.years.toFixed(2) : '-'}</td>
             <td><span class="bucks-amount">💰 ${participant.bucks}</span></td>
             <td>
                 <div class="action-buttons">
@@ -136,214 +151,18 @@ function renderParticipants() {
     });
 }
 
-// Add auction item
-function addItem() {
-    const nameInput = document.getElementById('itemName');
-    const priceInput = document.getElementById('itemPrice');
-    
-    const name = nameInput.value.trim();
-    const price = parseInt(priceInput.value) || 10;
-    
-    if (name === '') {
-        alert('Please enter an item name');
-        return;
-    }
-    
-    items.push({ 
-        name, 
-        price, 
-        status: 'available', 
-        winner: null 
-    });
-    
-    saveData();
-    renderItems();
-    updateStats();
-    
-    // Clear inputs
-    nameInput.value = '';
-    priceInput.value = '10';
-}
-
-// Open auction modal
-function openAuctionModal(index) {
-    currentItemIndex = index;
-    const item = items[index];
-    
-    document.getElementById('modalItemName').textContent = item.name;
-    document.getElementById('modalItemPrice').textContent = item.price;
-    
-    // Populate winner select with participants who have enough bucks
-    const select = document.getElementById('winnerSelect');
-    select.innerHTML = '<option value="">-- Select Participant --</option>';
-    
-    participants.forEach((participant, i) => {
-        if (participant.bucks >= item.price) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = `${participant.name} (${participant.bucks} bucks)`;
-            select.appendChild(option);
-        }
-    });
-    
-    if (select.options.length === 1) {
-        alert('No participants have enough Banquet Bucks for this item!');
-        return;
-    }
-    
-    document.getElementById('auctionModal').style.display = 'block';
-}
-
-// Close auction modal
-function closeAuctionModal() {
-    document.getElementById('auctionModal').style.display = 'none';
-    currentItemIndex = null;
-}
-
-// Confirm auction
-function confirmAuction() {
-    const select = document.getElementById('winnerSelect');
-    const winnerIndex = select.value;
-    
-    if (winnerIndex === '') {
-        alert('Please select a winner');
-        return;
-    }
-    
-    const item = items[currentItemIndex];
-    const participant = participants[winnerIndex];
-    
-    // Deduct bucks
-    participant.bucks -= item.price;
-    
-    // Update item status
-    item.status = 'sold';
-    item.winner = participant.name;
-    
-    saveData();
-    renderAll();
-    closeAuctionModal();
-}
-
-// Delete or reset item
-function deleteItem(index) {
-    const item = items[index];
-    
-    if (item.status === 'sold') {
-        if (confirm(`This item was sold to ${item.winner}. Do you want to refund and delete it?`)) {
-            // Find winner and refund
-            const winner = participants.find(p => p.name === item.winner);
-            if (winner) {
-                winner.bucks += item.price;
-            }
-            items.splice(index, 1);
-        }
-    } else {
-        if (confirm(`Are you sure you want to delete "${item.name}"?`)) {
-            items.splice(index, 1);
-        }
-    }
-    
-    saveData();
-    renderAll();
-}
-
-// Reset item (make available again and refund)
-function resetItem(index) {
-    const item = items[index];
-    
-    if (item.status === 'sold') {
-        if (confirm(`Reset "${item.name}" and refund ${item.winner}?`)) {
-            // Find winner and refund
-            const winner = participants.find(p => p.name === item.winner);
-            if (winner) {
-                winner.bucks += item.price;
-            }
-            
-            item.status = 'available';
-            item.winner = null;
-            
-            saveData();
-            renderAll();
-        }
-    }
-}
-
-// Filter items
-function filterItems(filter) {
-    currentFilter = filter;
-    
-    // Update button states
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.classList.add('active');
-    
-    renderItems();
-}
-
-// Render items table
-function renderItems() {
-    const tbody = document.getElementById('itemsBody');
-    tbody.innerHTML = '';
-    
-    const filteredItems = items.filter(item => {
-        if (currentFilter === 'all') return true;
-        if (currentFilter === 'available') return item.status === 'available';
-        if (currentFilter === 'sold') return item.status === 'sold';
-        return true;
-    });
-    
-    filteredItems.forEach((item, originalIndex) => {
-        // Find the original index in the full items array
-        const index = items.indexOf(item);
-        
-        const row = tbody.insertRow();
-        row.innerHTML = `
-            <td><strong>${item.name}</strong></td>
-            <td><span class="bucks-amount">${item.price}</span></td>
-            <td><span class="status-${item.status}">${item.status.toUpperCase()}</span></td>
-            <td>${item.winner || '-'}</td>
-            <td>
-                <div class="action-buttons">
-                    ${item.status === 'available' ? 
-                        `<button class="award-btn" onclick="openAuctionModal(${index})">Award Item</button>` : 
-                        `<button class="action-btn" onclick="resetItem(${index})">Reset</button>`
-                    }
-                    <button class="delete-btn" onclick="deleteItem(${index})">Delete</button>
-                </div>
-            </td>
-        `;
-    });
-}
-
 // Update statistics
 function updateStats() {
     document.getElementById('totalParticipants').textContent = participants.length;
-    document.getElementById('totalItems').textContent = items.length;
     
-    const soldCount = items.filter(item => item.status === 'sold').length;
-    document.getElementById('soldItems').textContent = soldCount;
-    
-    const revenue = items
-        .filter(item => item.status === 'sold')
-        .reduce((sum, item) => sum + item.price, 0);
-    document.getElementById('totalRevenue').textContent = revenue;
+    const totalBucks = participants.reduce((sum, p) => sum + p.bucks, 0);
+    document.getElementById('totalBucks').textContent = totalBucks;
 }
 
 // Render everything
 function renderAll() {
     renderParticipants();
-    renderItems();
     updateStats();
-}
-
-// Close modal when clicking outside
-window.onclick = function(event) {
-    const modal = document.getElementById('auctionModal');
-    if (event.target === modal) {
-        closeAuctionModal();
-    }
 }
 
 // Initialize on page load
