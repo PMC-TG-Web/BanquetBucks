@@ -171,6 +171,11 @@ function renderParticipants() {
             <td>${participant.hireDate || '-'}</td>
             <td>${participant.years ? participant.years.toFixed(2) : '-'}</td>
             <td><span class="bucks-amount">💰 ${participant.bucks}</span></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="adjust-btn" onclick="adjustBucks(${index}, 'custom')">Adjust Bucks</button>
+                </div>
+            </td>
             <td style="text-align: center;">
                 ${participant.toolbox ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'toolbox', 'custom')">Award</button>`}
             </td>
@@ -191,11 +196,6 @@ function renderParticipants() {
             </td>
             <td style="text-align: center;">
                 ${participant.yardage ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`}
-            </td>
-            <td>
-                <div class="action-buttons">
-                    <button class="adjust-btn" onclick="adjustBucks(${index}, 'custom')">Adjust Bucks</button>
-                </div>
             </td>
         `;
     });
