@@ -1,4 +1,4 @@
-const CACHE_NAME = 'banquet-bucks-v1';
+const CACHE_NAME = 'banquet-bucks-v2';
 const urlsToCache = [
   './',
   './index.html',
