@@ -123,7 +123,41 @@ function awardGame(index, gameName, amount) {
     if (customAmount === null || isNaN(customAmount) || customAmount <= 0) return;
     
     participant[field] = true;
+    participant.gameAmounts = participant.gameAmounts || {};
+    participant.gameAmounts[field] = customAmount;
     participant.bucks += customAmount;
+    
+    saveData();
+    renderParticipants();
+    updateStats();
+}
+
+// Undo a game award
+function undoGameAward(index, gameName) {
+    const participant = participants[index];
+    const gameFields = {
+        'toolbox': 'toolbox',
+        'motivating': 'motivating',
+        'organized': 'organized',
+        'safety': 'safety',
+        'humorous': 'humorous',
+        'wordSearch': 'wordSearch',
+        'yardage': 'yardage'
+    };
+    
+    const field = gameFields[gameName];
+    
+    if (!confirm(`Undo ${participant.name}'s win for this game?`)) {
+        return;
+    }
+    
+    // Refund the bucks
+    if (participant.gameAmounts && participant.gameAmounts[field]) {
+        participant.bucks -= participant.gameAmounts[field];
+        delete participant.gameAmounts[field];
+    }
+    
+    participant[field] = false;
     
     saveData();
     renderParticipants();
@@ -164,6 +198,17 @@ function renderParticipants() {
     const tbody = document.getElementById('participantsBody');
     tbody.innerHTML = '';
     
+    // Check which games have winners
+    const gameWinners = {
+        toolbox: participants.find(p => p.toolbox),
+        motivating: participants.find(p => p.motivating),
+        organized: participants.find(p => p.organized),
+        safety: participants.find(p => p.safety),
+        humorous: participants.find(p => p.humorous),
+        wordSearch: participants.find(p => p.wordSearch),
+        yardage: participants.find(p => p.yardage)
+    };
+    
     participants.forEach((participant, index) => {
         const row = tbody.insertRow();
         row.innerHTML = `
@@ -177,25 +222,39 @@ function renderParticipants() {
                 </div>
             </td>
             <td style="text-align: center;">
-                ${participant.toolbox ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'toolbox', 'custom')">Award</button>`}
+                ${participant.toolbox ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'toolbox')" title="Click to undo">✅</span>` : 
+                    (gameWinners.toolbox ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'toolbox', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.motivating ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'motivating', 'custom')">Award</button>`}
+                ${participant.motivating ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'motivating')" title="Click to undo">✅</span>` : 
+                    (gameWinners.motivating ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'motivating', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.organized ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'organized', 'custom')">Award</button>`}
+                ${participant.organized ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'organized')" title="Click to undo">✅</span>` : 
+                    (gameWinners.organized ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'organized', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.safety ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'safety', 'custom')">Award</button>`}
+                ${participant.safety ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'safety')" title="Click to undo">✅</span>` : 
+                    (gameWinners.safety ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'safety', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.humorous ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'humorous', 'custom')">Award</button>`}
+                ${participant.humorous ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'humorous')" title="Click to undo">✅</span>` : 
+                    (gameWinners.humorous ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'humorous', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.wordSearch ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'wordSearch', 'custom')">Award</button>`}
+                ${participant.wordSearch ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'wordSearch')" title="Click to undo">✅</span>` : 
+                    (gameWinners.wordSearch ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'wordSearch', 'custom')">Award</button>`)}
             </td>
             <td style="text-align: center;">
-                ${participant.yardage ? '✅' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`}
+                ${participant.yardage ? 
+                    `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'yardage')" title="Click to undo">✅</span>` : 
+                    (gameWinners.yardage ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`)}
             </td>
         `;
     });
