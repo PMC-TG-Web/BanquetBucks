@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banquet Bucks Auction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Banquet Bucks Auction Event</h1>
+        
+        <!-- Participants Section -->
+        <div class="section">
+            <h2>Participants</h2>
+            <div class="controls">
+                <input type="text" id="participantName" placeholder="Enter participant name">
+                <input type="number" id="initialBucks" placeholder="Initial bucks" value="100">
+                <button onclick="addParticipant()">Add Participant</button>
+            </div>
+            <table id="participantsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Banquet Bucks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="participantsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Auction Items Section -->
+        <div class="section">
+            <h2>Auction Items</h2>
+            <div class="controls">
+                <input type="text" id="itemName" placeholder="Enter item name">
+                <input type="number" id="itemPrice" placeholder="Starting price" value="10">
+                <button onclick="addItem()">Add Item</button>
+            </div>
+            <div class="auction-filters">
+                <button onclick="filterItems('all')" class="filter-btn active">All Items</button>
+                <button onclick="filterItems('available')" class="filter-btn">Available</button>
+                <button onclick="filterItems('sold')" class="filter-btn">Sold</button>
+            </div>
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Winner</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="totalParticipants">0</h3>
+                <p>Participants</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalItems">0</h3>
+                <p>Items</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="soldItems">0</h3>
+                <p>Items Sold</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalRevenue">0</h3>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auction Modal -->
+    <div id="auctionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuctionModal()">&times;</span>
+            <h2>Award Item: <span id="modalItemName"></span></h2>
+            <p>Price: <span id="modalItemPrice"></span> Banquet Bucks</p>
+            <div class="modal-body">
+                <label for="winnerSelect">Select Winner:</label>
+                <select id="winnerSelect">
+                    <option value="">-- Select Participant --</option>
+                </select>
+                <button onclick="confirmAuction()">Confirm Award</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
