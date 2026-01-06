@@ -335,6 +335,8 @@ function updateStats() {
 function renderAll() {
     renderParticipants();
     updateStats();
+    // Re-apply rolodex effect after rendering
+    setTimeout(updateCenterRow, 100);
 }
 
 // Initialize on page load
@@ -344,6 +346,56 @@ window.onload = function() {
         initializeSampleData();
     } else {
         renderAll();
+    }
+    
+    // Add scroll listener for rolodex effect
+    setupRolodexEffect();
+}
+
+// Setup rolodex scroll effect
+function setupRolodexEffect() {
+    const section = document.querySelector('.section');
+    if (!section) return;
+    
+    section.addEventListener('scroll', updateCenterRow);
+    // Initial call
+    updateCenterRow();
+}
+
+// Update center row highlighting
+function updateCenterRow() {
+    const section = document.querySelector('.section');
+    const tbody = document.getElementById('participantsBody');
+    if (!section || !tbody) return;
+    
+    const rows = tbody.querySelectorAll('tr');
+    const sectionRect = section.getBoundingClientRect();
+    const centerY = sectionRect.top + sectionRect.height / 2;
+    
+    let closestRow = null;
+    let closestDistance = Infinity;
+    
+    rows.forEach(row => {
+        const rect = row.getBoundingClientRect();
+        const rowCenterY = rect.top + rect.height / 2;
+        const distance = Math.abs(centerY - rowCenterY);
+        
+        // Remove all classes first
+        row.classList.remove('center-row', 'fade-row');
+        
+        if (distance < closestDistance && rect.top < centerY && rect.bottom > centerY) {
+            closestDistance = distance;
+            closestRow = row;
+        }
+        
+        // Add fade class to rows far from center
+        if (distance > 100) {
+            row.classList.add('fade-row');
+        }
+    });
+    
+    if (closestRow) {
+        closestRow.classList.add('center-row');
     }
 }
 

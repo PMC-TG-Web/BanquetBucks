@@ -180,6 +180,29 @@ tbody tr:hover {
     cursor: pointer;
 }
 
+/* Rolodex center row effect */
+tbody tr {
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+tbody tr.center-row {
+    transform: scale(1.08);
+    background: #e3f2fd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    position: relative;
+}
+
+tbody tr.center-row td:first-child {
+    background: #e3f2fd;
+}
+
+tbody tr.fade-row {
+    opacity: 0.7;
+    transform: scale(0.98);
+}
+
 tr:hover {
     background: #f8f9fa;
 }
