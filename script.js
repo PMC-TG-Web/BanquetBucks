@@ -335,8 +335,6 @@ function updateStats() {
 function renderAll() {
     renderParticipants();
     updateStats();
-    // Re-apply rolodex effect after rendering
-    setTimeout(updateCenterRow, 100);
 }
 
 // Initialize on page load
@@ -347,9 +345,6 @@ window.onload = function() {
     } else {
         renderAll();
     }
-}
-
-
 }
 
 // Reset all data
