@@ -378,24 +378,43 @@ function updateCenterRow() {
     rows.forEach(row => {
         const rect = row.getBoundingClientRect();
         const rowCenterY = rect.top + rect.height / 2;
-        const distance = Math.abs(centerY - rowCenterY);
+        const distance = centerY - rowCenterY;
+        const absDistance = Math.abs(distance);
         
         // Remove all classes first
         row.classList.remove('center-row', 'fade-row');
         
-        if (distance < closestDistance && rect.top < centerY && rect.bottom > centerY) {
+        // Calculate rotation based on distance from center
+        // Creates a cylinder effect
+        const maxRotation = 35; // degrees
+        const rotationRadius = 200; // pixels from center where max rotation occurs
+        let rotation = (distance / rotationRadius) * maxRotation;
+        rotation = Math.max(-maxRotation, Math.min(maxRotation, rotation));
+        
+        // Calculate scale based on distance from center
+        const maxDistance = 300;
+        const normalizedDistance = Math.min(absDistance / maxDistance, 1);
+        const scale = 1 - (normalizedDistance * 0.15); // Scale from 1.0 to 0.85
+        
+        // Apply 3D transform for rolodex effect
+        row.style.transform = `rotateX(${rotation}deg) scale(${scale})`;
+        row.style.opacity = 1 - (normalizedDistance * 0.4); // Fade out distant rows
+        
+        if (absDistance < Math.abs(closestDistance) && rect.top < centerY && rect.bottom > centerY) {
             closestDistance = distance;
             closestRow = row;
         }
         
         // Add fade class to rows far from center
-        if (distance > 100) {
+        if (absDistance > 150) {
             row.classList.add('fade-row');
         }
     });
     
     if (closestRow) {
         closestRow.classList.add('center-row');
+        closestRow.style.transform = 'rotateX(0deg) scale(1.05)';
+        closestRow.style.opacity = '1';
     }
 }
 
