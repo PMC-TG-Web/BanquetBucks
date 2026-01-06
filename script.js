@@ -158,6 +158,100 @@ function addParticipant() {
     bucksInput.value = '';
 }
 
+// Upload employee file (CSV or TXT format)
+function uploadEmployeeFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const content = e.target.result;
+        parseEmployeeFile(content);
+    };
+    reader.readAsText(file);
+    
+    // Reset the file input
+    event.target.value = '';
+}
+
+// Parse employee file and update participants
+function parseEmployeeFile(content) {
+    const lines = content.split('\n').filter(line => line.trim() !== '');
+    
+    if (lines.length === 0) {
+        alert('File is empty!');
+        return;
+    }
+    
+    const newParticipants = [];
+    let hasErrors = false;
+    let errorMessages = [];
+    
+    // Check if first line is a header (contains "name" or "employee")
+    const firstLine = lines[0].toLowerCase();
+    const hasHeader = firstLine.includes('name') || firstLine.includes('employee');
+    const startIndex = hasHeader ? 1 : 0;
+    
+    for (let i = startIndex; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line === '') continue;
+        
+        // Split by comma, tab, or multiple spaces
+        const parts = line.split(/[,\t]+|  +/).map(p => p.trim());
+        
+        if (parts.length < 2) {
+            errorMessages.push(`Line ${i + 1}: Not enough data (need at least name and bucks)`);
+            hasErrors = true;
+            continue;
+        }
+        
+        const name = parts[0];
+        const hireDate = parts.length > 3 ? parts[1] : '';
+        const years = parts.length > 3 ? parseFloat(parts[2]) || 0 : 0;
+        const bucks = parseInt(parts[parts.length - 1]) || 0;
+        
+        if (name === '' || bucks === 0) {
+            errorMessages.push(`Line ${i + 1}: Invalid data (name or bucks missing)`);
+            hasErrors = true;
+            continue;
+        }
+        
+        newParticipants.push({
+            name,
+            hireDate,
+            years,
+            bucks,
+            auctionItems: [],
+            toolbox: false,
+            motivating: false,
+            organized: false,
+            safety: false,
+            humorous: false,
+            wordSearch: false,
+            yardage: false
+        });
+    }
+    
+    if (hasErrors) {
+        const proceed = confirm(`Found ${errorMessages.length} error(s):\n${errorMessages.slice(0, 5).join('\n')}${errorMessages.length > 5 ? '\n...' : ''}\n\nContinue with ${newParticipants.length} valid entries?`);
+        if (!proceed) return;
+    }
+    
+    if (newParticipants.length === 0) {
+        alert('No valid employee data found in file!');
+        return;
+    }
+    
+    const confirmMsg = `Replace current ${participants.length} participants with ${newParticipants.length} from file?`;
+    if (confirm(confirmMsg)) {
+        participants = newParticipants;
+        auctionItemCounter = 1;
+        saveData();
+        renderAll();
+        alert(`Successfully loaded ${newParticipants.length} employees!`);
+    }
+}
+
 // Award game bucks to a participant
 function awardGame(index, gameName, amount) {
     const participant = participants[index];

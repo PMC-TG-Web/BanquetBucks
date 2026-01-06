@@ -15,6 +15,10 @@
             <button onclick="resetAllData()" style="background: #e74c3c; padding: 10px 20px;">Reset to Employee List</button>
             <button onclick="skipAuctionItem()" style="background: #f39c12; padding: 10px 20px; margin-left: 10px;">Skip Current Item</button>
             <button onclick="awardSpecificItem()" style="background: #3498db; padding: 10px 20px; margin-left: 10px;">Award Specific Item #</button>
+            <label for="fileUpload" style="display: inline-block; background: #27ae60; color: white; padding: 10px 20px; margin-left: 10px; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                📁 Upload Employee File
+                <input type="file" id="fileUpload" accept=".csv,.txt" onchange="uploadEmployeeFile(event)" style="display: none;">
+            </label>
         </div>
         
         <!-- Participants Section -->
