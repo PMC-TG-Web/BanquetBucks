@@ -226,6 +226,10 @@ function renderParticipants() {
     const tbody = document.getElementById('participantsBody');
     tbody.innerHTML = '';
     
+    // Update the Auction Items header with current item number
+    const headers = document.querySelectorAll('#participantsTable th');
+    headers[5].textContent = `Auction Item #${auctionItemCounter}`;
+    
     // Check which games have winners
     const gameWinners = {
         toolbox: participants.find(p => p.toolbox),
@@ -251,9 +255,11 @@ function renderParticipants() {
             </td>
             <td style="text-align: center;">
                 <button class="action-btn" onclick="awardAuctionItem(${index})">Award Item</button>
-                ${participant.auctionItems && participant.auctionItems.length > 0 ? 
-                    `<div style="margin-top: 5px; font-size: 12px;">${participant.auctionItems.join(', ')}</div>` : 
-                    ''}
+                <div style="margin-top: 5px; font-size: 12px; color: #666;">
+                    ${participant.auctionItems && participant.auctionItems.length > 0 ? 
+                        participant.auctionItems.join(', ') : 
+                        '-'}
+                </div>
             </td>
             <td style="text-align: center;">
                 ${participant.toolbox ? 
