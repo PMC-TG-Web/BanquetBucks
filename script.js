@@ -192,14 +192,7 @@ function renderParticipants() {
             </td>
             <td>
                 <div class="action-buttons">
-                    <div class="adjust-controls">
-                        <button class="adjust-btn" onclick="adjustBucks(${index}, 10)">+10</button>
-                        <button class="adjust-btn" onclick="adjustBucks(${index}, 25)">+25</button>
-                        <button class="adjust-btn" onclick="adjustBucks(${index}, 50)">+50</button>
-                        <button class="adjust-btn" onclick="adjustBucks(${index}, -10)">-10</button>
-                        <button class="adjust-btn" onclick="adjustBucks(${index}, 'custom')">Custom</button>
-                    </div>
-                    <button class="delete-btn" onclick="deleteParticipant(${index})">Delete</button>
+                    <button class="adjust-btn" onclick="adjustBucks(${index}, 'custom')">Adjust Bucks</button>
                 </div>
             </td>
         `;
