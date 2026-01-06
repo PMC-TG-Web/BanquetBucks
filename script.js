@@ -372,9 +372,6 @@ function updateCenterRow() {
     const sectionRect = section.getBoundingClientRect();
     const centerY = sectionRect.top + sectionRect.height / 2;
     
-    let closestRow = null;
-    let closestDistance = Infinity;
-    
     rows.forEach(row => {
         const rect = row.getBoundingClientRect();
         const rowCenterY = rect.top + rect.height / 2;
@@ -393,22 +390,12 @@ function updateCenterRow() {
         row.style.transform = `scale(${scale})`;
         row.style.opacity = 1 - (normalizedDistance * 0.4); // Fade out distant rows
         
-        if (absDistance < Math.abs(closestDistance) && rect.top < centerY && rect.bottom > centerY) {
-            closestDistance = distance;
-            closestRow = row;
-        }
-        
         // Add fade class to rows far from center
         if (absDistance > 150) {
             row.classList.add('fade-row');
         }
     });
-    
-    if (closestRow) {
-        closestRow.classList.add('center-row');
-        closestRow.style.transform = 'scale(1.05)';
-        closestRow.style.opacity = '1';
-    }
+}
 }
 
 // Reset all data
