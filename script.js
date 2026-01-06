@@ -155,7 +155,7 @@ function addParticipant() {
     nameInput.value = '';
     hireDateInput.value = '';
     yearsInput.value = '';
-    bucksInput.value = '10';
+    bucksInput.value = '';
 }
 
 // Award game bucks to a participant
