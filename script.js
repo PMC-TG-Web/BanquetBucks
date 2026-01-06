@@ -64,10 +64,11 @@ function saveData() {
 }
 
 // Award auction item to participant
-function awardAuctionItem(index) {
+function awardAuctionItem(index, itemNumber = null) {
     const participant = participants[index];
+    const itemNum = itemNumber || auctionItemCounter;
     
-    const price = parseInt(prompt(`Enter price for Auction Item #${auctionItemCounter}:`));
+    const price = parseInt(prompt(`Enter price for Auction Item #${itemNum}:`));
     
     if (price === null || isNaN(price) || price <= 0) return;
     
@@ -77,14 +78,49 @@ function awardAuctionItem(index) {
     }
     
     participant.auctionItems = participant.auctionItems || [];
-    participant.auctionItems.push(auctionItemCounter);
+    participant.auctionItems.push(itemNum);
     participant.bucks -= price;
     
-    auctionItemCounter++;
+    // Only increment if we're awarding the current item
+    if (itemNum === auctionItemCounter) {
+        auctionItemCounter++;
+    }
     
     saveData();
     renderParticipants();
     updateStats();
+}
+
+// Skip current auction item
+function skipAuctionItem() {
+    if (confirm(`Skip Auction Item #${auctionItemCounter}?`)) {
+        auctionItemCounter++;
+        saveData();
+        renderParticipants();
+    }
+}
+
+// Award a specific auction item number
+function awardSpecificItem() {
+    const itemNum = parseInt(prompt(`Enter the auction item number to award:`));
+    if (itemNum === null || isNaN(itemNum) || itemNum <= 0) return;
+    
+    // Find participants with enough bucks
+    const eligibleParticipants = participants
+        .map((p, i) => ({ participant: p, index: i }))
+        .filter(({ participant }) => participant.bucks > 0);
+    
+    if (eligibleParticipants.length === 0) {
+        alert('No participants with bucks available!');
+        return;
+    }
+    
+    const participantIndex = parseInt(prompt(`Enter participant row number (1-${participants.length}) to award item #${itemNum} to:`));
+    if (participantIndex === null || isNaN(participantIndex) || participantIndex < 1 || participantIndex > participants.length) {
+        return;
+    }
+    
+    awardAuctionItem(participantIndex - 1, itemNum);
 }
 
 // Add a participant
@@ -137,10 +173,8 @@ function awardGame(index, gameName, amount) {
     
     const field = gameFields[gameName];
     
-    // Check if anyone else has already won this game
-    const existingWinner = participants.find(p => p[field] === true);
-    if (existingWinner) {
-        alert(`${existingWinner.name} has already won this game!`);
+    if (participant[field]) {
+        alert(`${participant.name} has already won this game!`);
         return;
     }
     
@@ -230,17 +264,6 @@ function renderParticipants() {
     const headers = document.querySelectorAll('#participantsTable th');
     headers[5].textContent = `Auction Item #${auctionItemCounter}`;
     
-    // Check which games have winners
-    const gameWinners = {
-        toolbox: participants.find(p => p.toolbox),
-        motivating: participants.find(p => p.motivating),
-        organized: participants.find(p => p.organized),
-        safety: participants.find(p => p.safety),
-        humorous: participants.find(p => p.humorous),
-        wordSearch: participants.find(p => p.wordSearch),
-        yardage: participants.find(p => p.yardage)
-    };
-    
     participants.forEach((participant, index) => {
         const row = tbody.insertRow();
         row.innerHTML = `
@@ -259,37 +282,37 @@ function renderParticipants() {
             <td style="text-align: center;">
                 ${participant.toolbox ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'toolbox')" title="Click to undo">✅</span>` : 
-                    (gameWinners.toolbox ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'toolbox', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'toolbox', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.motivating ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'motivating')" title="Click to undo">✅</span>` : 
-                    (gameWinners.motivating ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'motivating', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'motivating', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.organized ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'organized')" title="Click to undo">✅</span>` : 
-                    (gameWinners.organized ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'organized', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'organized', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.safety ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'safety')" title="Click to undo">✅</span>` : 
-                    (gameWinners.safety ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'safety', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'safety', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.humorous ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'humorous')" title="Click to undo">✅</span>` : 
-                    (gameWinners.humorous ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'humorous', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'humorous', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.wordSearch ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'wordSearch')" title="Click to undo">✅</span>` : 
-                    (gameWinners.wordSearch ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'wordSearch', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'wordSearch', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center;">
                 ${participant.yardage ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'yardage')" title="Click to undo">✅</span>` : 
-                    (gameWinners.yardage ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`)}
+                    `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`}
             </td>
             <td style="text-align: center; font-size: 12px; color: #666; max-width: 150px; word-wrap: break-word; white-space: normal;">
                 ${participant.auctionItems && participant.auctionItems.length > 0 ? 
