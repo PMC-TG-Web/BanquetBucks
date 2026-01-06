@@ -255,11 +255,6 @@ function renderParticipants() {
             </td>
             <td style="text-align: center;">
                 <button class="action-btn" onclick="awardAuctionItem(${index})">Award Item</button>
-                <div style="margin-top: 5px; font-size: 12px; color: #666;">
-                    ${participant.auctionItems && participant.auctionItems.length > 0 ? 
-                        participant.auctionItems.join(', ') : 
-                        '-'}
-                </div>
             </td>
             <td style="text-align: center;">
                 ${participant.toolbox ? 
@@ -295,6 +290,11 @@ function renderParticipants() {
                 ${participant.yardage ? 
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'yardage')" title="Click to undo">✅</span>` : 
                     (gameWinners.yardage ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`)}
+            </td>
+            <td style="text-align: center; font-size: 12px; color: #666;">
+                ${participant.auctionItems && participant.auctionItems.length > 0 ? 
+                    participant.auctionItems.join(', ') : 
+                    '-'}
             </td>
         `;
     });
