@@ -109,8 +109,10 @@ function awardGame(index, gameName, amount) {
     
     const field = gameFields[gameName];
     
-    if (participant[field]) {
-        alert(`${participant.name} already won this game!`);
+    // Check if anyone else has already won this game
+    const existingWinner = participants.find(p => p[field] === true);
+    if (existingWinner) {
+        alert(`${existingWinner.name} has already won this game!`);
         return;
     }
     
