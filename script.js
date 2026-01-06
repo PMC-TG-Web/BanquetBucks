@@ -291,7 +291,7 @@ function renderParticipants() {
                     `<span style="cursor: pointer; font-size: 20px;" onclick="undoGameAward(${index}, 'yardage')" title="Click to undo">✅</span>` : 
                     (gameWinners.yardage ? '-' : `<button class="action-btn" onclick="awardGame(${index}, 'yardage', 'custom')">Award</button>`)}
             </td>
-            <td style="text-align: center; font-size: 12px; color: #666;">
+            <td style="text-align: center; font-size: 12px; color: #666; max-width: 150px; word-wrap: break-word; white-space: normal;">
                 ${participant.auctionItems && participant.auctionItems.length > 0 ? 
                     participant.auctionItems.join(', ') : 
                     '-'}
