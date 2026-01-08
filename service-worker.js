@@ -1,9 +1,11 @@
-const CACHE_NAME = 'banquet-bucks-v2';
+const CACHE_NAME = 'banquet-bucks-v3';
 const urlsToCache = [
   './',
   './index.html',
+  './voting.html',
   './styles.css',
   './script.js',
+  './voting.js',
   './manifest.json'
 ];
 
@@ -36,35 +38,29 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch files from cache or network
+// Fetch files from network first, fall back to cache
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        // Cache hit - return response
-        if (response) {
+        // Check if valid response
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
         
-        // Clone the request
-        const fetchRequest = event.request.clone();
+        // Clone the response for caching
+        const responseToCache = response.clone();
         
-        return fetch(fetchRequest).then(response => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          // Clone the response
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        });
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+        
+        return response;
+      })
+      .catch(() => {
+        // Network failed, try cache
+        return caches.match(event.request);
       })
   );
 });
