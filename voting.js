@@ -164,16 +164,35 @@ function showResults() {
             votes: votes[employee] ? votes[employee][category] : 0
         }));
         
-        // Sort by votes (descending) and take top 5
+        // Sort by votes (descending)
         employeeVotes.sort((a, b) => b.votes - a.votes);
-        const top5 = employeeVotes.slice(0, 5);
         
-        // Assign bucks to top 5
-        results[category] = top5.map((item, index) => ({
-            name: item.name,
-            votes: item.votes,
-            bucks: bucksAmounts[index]
-        }));
+        // Assign bucks handling ties
+        const resultsWithBucks = [];
+        let currentRank = 0;
+        let previousVotes = null;
+        
+        for (let i = 0; i < employeeVotes.length && currentRank < 5; i++) {
+            const employee = employeeVotes[i];
+            
+            // If votes are different from previous, advance the rank
+            if (employee.votes !== previousVotes) {
+                currentRank = i;
+            }
+            
+            // Only include top 5 ranks
+            if (currentRank < 5) {
+                resultsWithBucks.push({
+                    name: employee.name,
+                    votes: employee.votes,
+                    bucks: bucksAmounts[currentRank],
+                    rank: currentRank + 1
+                });
+                previousVotes = employee.votes;
+            }
+        }
+        
+        results[category] = resultsWithBucks;
     });
     
     displayResults(results);
