@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <title>Banquet Bucks - Voting</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .voting-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .voting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .voting-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .voting-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .voting-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .vote-cell {
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .vote-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .vote-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .vote-btn:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+        
+        .vote-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .vote-count {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 30px;
+            color: #667eea;
+        }
+        
+        .employee-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+        }
+        
+        .reset-btn {
+            background: #e74c3c;
+        }
+        
+        .reset-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container voting-container">
+        <h1>🗳️ Banquet Awards Voting</h1>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='index.html'">← Back to Auction</button>
+            <button class="nav-btn reset-btn" onclick="resetVotes()">Reset All Votes</button>
+        </div>
+
+        <table class="voting-table">
+            <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th style="text-align: center;">Most Motivating</th>
+                    <th style="text-align: center;">Most Organized</th>
+                    <th style="text-align: center;">Most Safety Minded</th>
+                    <th style="text-align: center;">Most Humorous</th>
+                </tr>
+            </thead>
+            <tbody id="votingTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="voting.js"></script>
+</body>
+</html>
