@@ -460,7 +460,7 @@ function exportToExcel() {
             'Years Employed': participant.years ? participant.years.toFixed(2) : '-',
             'Banquet Bucks': participant.bucks,
             'Items Won': participant.auctionItems && participant.auctionItems.length > 0 ? participant.auctionItems.join(', ') : '-',
-            'Most Toolbox Talks': participant.toolbox ? 'Yes' : 'No',
+            'Rookie of the Year': participant.toolbox ? 'Yes' : 'No',
             'Most Motivating': participant.motivating ? 'Yes' : 'No',
             'Most Organized': participant.organized ? 'Yes' : 'No',
             'Most Safety Minded': participant.safety ? 'Yes' : 'No',
