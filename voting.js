@@ -164,16 +164,19 @@ function showResults() {
             votes: votes[employee] ? votes[employee][category] : 0
         }));
         
+        // Filter out employees with 0 votes
+        const employeesWithVotes = employeeVotes.filter(e => e.votes > 0);
+        
         // Sort by votes (descending)
-        employeeVotes.sort((a, b) => b.votes - a.votes);
+        employeesWithVotes.sort((a, b) => b.votes - a.votes);
         
         // Assign bucks handling ties
         const resultsWithBucks = [];
         let currentRank = 0;
         let previousVotes = null;
         
-        for (let i = 0; i < employeeVotes.length && currentRank < 5; i++) {
-            const employee = employeeVotes[i];
+        for (let i = 0; i < employeesWithVotes.length && currentRank < 5; i++) {
+            const employee = employeesWithVotes[i];
             
             // If votes are different from previous, advance the rank
             if (employee.votes !== previousVotes) {
