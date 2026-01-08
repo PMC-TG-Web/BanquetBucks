@@ -153,6 +153,8 @@ window.onload = function() {
 }
 
 // Calculate top 5 for each category and show results
+let currentResults = {}; // Store results globally for transfer
+
 function showResults() {
     const results = {};
     const bucksAmounts = [125, 100, 75, 50, 25];
@@ -198,6 +200,7 @@ function showResults() {
         results[category] = resultsWithBucks;
     });
     
+    currentResults = results; // Store for transfer function
     displayResults(results);
 }
 
@@ -254,4 +257,66 @@ window.onclick = function(event) {
     if (event.target === modal) {
         closeModal();
     }
+}
+
+// Transfer voting results to auction page
+function transferToAuction() {
+    // Load participants from auction page
+    const savedParticipants = localStorage.getItem('participants');
+    if (!savedParticipants) {
+        alert('No auction data found. Please visit the auction page first.');
+        return;
+    }
+    
+    let participants = JSON.parse(savedParticipants);
+    
+    // Category field mapping (voting category -> auction page field)
+    const categoryFieldMap = {
+        'mvp': 'toolbox',
+        'motivating': 'motivating',
+        'organized': 'organized',
+        'safety': 'safety',
+        'humorous': 'humorous'
+    };
+    
+    // Process each category
+    categories.forEach(category => {
+        const fieldName = categoryFieldMap[category];
+        const winners = currentResults[category] || [];
+        
+        winners.forEach(winner => {
+            // Find matching participant (case-insensitive, handle name variations)
+            const participant = participants.find(p => {
+                const pName = p.name.toLowerCase().trim();
+                const wName = winner.name.toLowerCase().trim();
+                return pName === wName || 
+                       pName.replace(/[()]/g, '') === wName.replace(/[()]/g, '') ||
+                       pName.includes(wName) || wName.includes(pName);
+            });
+            
+            if (participant) {
+                // Add bucks
+                participant.bucks += winner.bucks;
+                
+                // Mark category as won
+                participant[fieldName] = true;
+                
+                // Store the amount awarded for this game
+                if (!participant.gameAmounts) {
+                    participant.gameAmounts = {};
+                }
+                participant.gameAmounts[fieldName] = winner.bucks;
+            }
+        });
+    });
+    
+    // Save updated participants back to localStorage
+    localStorage.setItem('participants', JSON.stringify(participants));
+    
+    // Show success message
+    const successMsg = document.getElementById('transferSuccess');
+    successMsg.style.display = 'block';
+    setTimeout(() => {
+        successMsg.style.display = 'none';
+    }, 3000);
 }

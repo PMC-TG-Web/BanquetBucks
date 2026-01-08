@@ -225,6 +225,37 @@
             color: #27ae60;
             font-size: 16px;
         }
+        
+        .transfer-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .transfer-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .transfer-success {
+            background: #2ecc71;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -261,6 +292,8 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="resultsContainer"></div>
+            <button class="transfer-btn" onclick="transferToAuction()">✅ Transfer Bucks to Auction Page</button>
+            <div id="transferSuccess" class="transfer-success">✅ Successfully transferred bucks to auction page!</div>
         </div>
     </div>
 
