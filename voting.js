@@ -127,3 +127,84 @@ window.onload = function() {
     loadVotes();
     renderVotingTable();
 }
+
+// Calculate top 5 for each category and show results
+function showResults() {
+    const results = {};
+    const bucksAmounts = [125, 100, 75, 50, 25];
+    
+    categories.forEach(category => {
+        // Create array of employees with their vote counts
+        const employeeVotes = employees.map(employee => ({
+            name: employee,
+            votes: votes[employee] ? votes[employee][category] : 0
+        }));
+        
+        // Sort by votes (descending) and take top 5
+        employeeVotes.sort((a, b) => b.votes - a.votes);
+        const top5 = employeeVotes.slice(0, 5);
+        
+        // Assign bucks to top 5
+        results[category] = top5.map((item, index) => ({
+            name: item.name,
+            votes: item.votes,
+            bucks: bucksAmounts[index]
+        }));
+    });
+    
+    displayResults(results);
+}
+
+// Display results in modal
+function displayResults(results) {
+    const container = document.getElementById('resultsContainer');
+    const categoryTitles = {
+        'motivating': 'Most Motivating',
+        'organized': 'Most Organized',
+        'safety': 'Most Safety Minded',
+        'humorous': 'Most Humorous'
+    };
+    
+    let html = '';
+    
+    categories.forEach(category => {
+        html += `
+            <div class="category-results">
+                <h3>${categoryTitles[category]}</h3>
+                <ol class="results-list">
+        `;
+        
+        results[category].forEach(result => {
+            html += `
+                <li>
+                    <span class="result-name">${result.name}</span>
+                    <div>
+                        <span class="result-votes">${result.votes} votes</span>
+                        <span class="result-bucks">💰 ${result.bucks} bucks</span>
+                    </div>
+                </li>
+            `;
+        });
+        
+        html += `
+                </ol>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    document.getElementById('resultsModal').style.display = 'block';
+}
+
+// Close modal
+function closeModal() {
+    document.getElementById('resultsModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('resultsModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}

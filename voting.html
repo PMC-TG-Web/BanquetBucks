@@ -116,6 +116,115 @@
         .reset-btn:hover {
             background: #c0392b;
         }
+        
+        .done-btn {
+            background: #27ae60;
+            font-size: 16px;
+        }
+        
+        .done-btn:hover {
+            background: #229954;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .modal-header h2 {
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .close-btn {
+            font-size: 30px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .category-results {
+            margin-bottom: 30px;
+        }
+        
+        .category-results h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-radius: 5px;
+        }
+        
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .results-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #667eea;
+        }
+        
+        .results-list li:nth-child(1) { border-left-color: #FFD700; background: #fffbf0; }
+        .results-list li:nth-child(2) { border-left-color: #C0C0C0; background: #f8f9fa; }
+        .results-list li:nth-child(3) { border-left-color: #CD7F32; background: #fff8f0; }
+        .results-list li:nth-child(4) { border-left-color: #667eea; }
+        .results-list li:nth-child(5) { border-left-color: #764ba2; }
+        
+        .result-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .result-votes {
+            color: #666;
+            margin-right: 15px;
+        }
+        
+        .result-bucks {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -124,6 +233,7 @@
         
         <div class="nav-buttons">
             <button class="nav-btn" onclick="window.location.href='index.html'">← Back to Auction</button>
+            <button class="nav-btn done-btn" onclick="showResults()">✓ Done - Show Results</button>
             <button class="nav-btn reset-btn" onclick="resetVotes()">Reset All Votes</button>
         </div>
 
@@ -140,6 +250,17 @@
             <tbody id="votingTableBody">
             </tbody>
         </table>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 Voting Results - Top 5 Per Category</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="resultsContainer"></div>
+        </div>
     </div>
 
     <script src="voting.js"></script>
