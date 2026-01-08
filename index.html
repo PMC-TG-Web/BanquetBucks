@@ -15,6 +15,7 @@
             <button onclick="resetAllData()" style="background: #e74c3c; padding: 10px 20px;">Reset to Employee List</button>
             <button onclick="skipAuctionItem()" style="background: #f39c12; padding: 10px 20px; margin-left: 10px;">Skip Current Item</button>
             <button onclick="awardSpecificItem()" style="background: #3498db; padding: 10px 20px; margin-left: 10px;">Award Specific Item #</button>
+            <button onclick="exportToExcel()" style="background: #16a085; padding: 10px 20px; margin-left: 10px;">📥 Download Excel</button>
             <label for="fileUpload" style="display: inline-block; background: #27ae60; color: white; padding: 10px 20px; margin-left: 10px; border-radius: 5px; cursor: pointer; font-weight: 600;">
                 📁 Upload Employee File
                 <input type="file" id="fileUpload" accept=".csv,.txt" onchange="uploadEmployeeFile(event)" style="display: none;">
@@ -68,6 +69,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
     <script>
         // Register service worker for offline functionality

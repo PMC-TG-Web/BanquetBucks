@@ -449,3 +449,55 @@ function resetAllData() {
         initializeSampleData();
     }
 }
+// Export data to Excel
+function exportToExcel() {
+    // Prepare data for export
+    const exportData = participants.map((participant, index) => {
+        return {
+            'Row': index + 1,
+            'Employee Name': participant.name,
+            'Hire Date': participant.hireDate || '-',
+            'Years Employed': participant.years ? participant.years.toFixed(2) : '-',
+            'Banquet Bucks': participant.bucks,
+            'Items Won': participant.auctionItems && participant.auctionItems.length > 0 ? participant.auctionItems.join(', ') : '-',
+            'Most Toolbox Talks': participant.toolbox ? 'Yes' : 'No',
+            'Most Motivating': participant.motivating ? 'Yes' : 'No',
+            'Most Organized': participant.organized ? 'Yes' : 'No',
+            'Most Safety Minded': participant.safety ? 'Yes' : 'No',
+            'Most Humorous': participant.humorous ? 'Yes' : 'No',
+            'Concrete Word Search': participant.wordSearch ? 'Yes' : 'No',
+            'Concrete Yardage': participant.yardage ? 'Yes' : 'No'
+        };
+    });
+
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Set column widths
+    ws['!cols'] = [
+        { wch: 5 },   // Row
+        { wch: 25 },  // Employee Name
+        { wch: 12 },  // Hire Date
+        { wch: 14 },  // Years Employed
+        { wch: 14 },  // Banquet Bucks
+        { wch: 20 },  // Items Won
+        { wch: 18 },  // Most Toolbox Talks
+        { wch: 16 },  // Most Motivating
+        { wch: 15 },  // Most Organized
+        { wch: 18 },  // Most Safety Minded
+        { wch: 15 },  // Most Humorous
+        { wch: 20 },  // Concrete Word Search
+        { wch: 16 }   // Concrete Yardage
+    ];
+
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Auction Results');
+
+    // Generate filename with timestamp
+    const date = new Date();
+    const filename = `BanquetBucks_Results_${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.xlsx`;
+
+    // Download file
+    XLSX.writeFile(wb, filename);
+}
