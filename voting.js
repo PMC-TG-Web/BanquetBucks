@@ -313,10 +313,11 @@ function transferToAuction() {
     // Save updated participants back to localStorage
     localStorage.setItem('participants', JSON.stringify(participants));
     
-    // Show success message
+    // Show success message briefly then close modal
     const successMsg = document.getElementById('transferSuccess');
     successMsg.style.display = 'block';
     setTimeout(() => {
         successMsg.style.display = 'none';
-    }, 3000);
+        closeModal();
+    }, 1500);
 }
