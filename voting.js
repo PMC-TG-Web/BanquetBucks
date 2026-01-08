@@ -41,6 +41,24 @@ function loadVotes() {
     const savedVotes = localStorage.getItem('banquetVotes');
     if (savedVotes) {
         votes = JSON.parse(savedVotes);
+        // Ensure all employees have all categories (for backward compatibility)
+        employees.forEach(employee => {
+            if (!votes[employee]) {
+                votes[employee] = {
+                    motivating: 0,
+                    organized: 0,
+                    safety: 0,
+                    humorous: 0,
+                    mvp: 0
+                };
+            } else {
+                // Add missing categories to existing employees
+                if (votes[employee].mvp === undefined) {
+                    votes[employee].mvp = 0;
+                }
+            }
+        });
+        saveVotes(); // Save the updated structure
     } else {
         // Initialize empty votes
         employees.forEach(employee => {
