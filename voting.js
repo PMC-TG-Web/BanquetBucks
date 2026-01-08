@@ -31,7 +31,7 @@ const employees = [
     "William Stoltzfus"
 ];
 
-const categories = ['motivating', 'organized', 'safety', 'humorous'];
+const categories = ['motivating', 'organized', 'safety', 'humorous', 'mvp'];
 
 // Initialize votes data structure
 let votes = {};
@@ -48,7 +48,8 @@ function loadVotes() {
                 motivating: 0,
                 organized: 0,
                 safety: 0,
-                humorous: 0
+                humorous: 0,
+                mvp: 0
             };
         });
     }
@@ -62,7 +63,7 @@ function saveVotes() {
 // Update vote count
 function updateVote(employee, category, delta) {
     if (!votes[employee]) {
-        votes[employee] = { motivating: 0, organized: 0, safety: 0, humorous: 0 };
+        votes[employee] = { motivating: 0, organized: 0, safety: 0, humorous: 0, mvp: 0 };
     }
     
     votes[employee][category] += delta;
@@ -114,7 +115,8 @@ function resetVotes() {
                 motivating: 0,
                 organized: 0,
                 safety: 0,
-                humorous: 0
+                humorous: 0,
+                mvp: 0
             };
         });
         saveVotes();
@@ -162,7 +164,8 @@ function displayResults(results) {
         'motivating': 'Most Motivating',
         'organized': 'Most Organized',
         'safety': 'Most Safety Minded',
-        'humorous': 'Most Humorous'
+        'humorous': 'Most Humorous',
+        'mvp': 'MVP (Most Valuable Player)'
     };
     
     let html = '';
