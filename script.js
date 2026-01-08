@@ -361,7 +361,7 @@ function renderParticipants() {
     participants.forEach((participant, index) => {
         const row = tbody.insertRow();
         row.innerHTML = `
-            <td><strong>${participant.name}</strong></td>
+            <td><strong>${index + 1}. ${participant.name}</strong></td>
             <td>${participant.hireDate || '-'}</td>
             <td>${participant.years ? participant.years.toFixed(2) : '-'}</td>
             <td><span class="bucks-amount">💰 ${participant.bucks}</span></td>
