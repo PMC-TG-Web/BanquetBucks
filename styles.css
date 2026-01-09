@@ -124,7 +124,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 5px;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 /* Smooth scrolling */
@@ -154,7 +154,7 @@ th {
 td {
     padding: 3px 4px;
     border-bottom: 1px solid #eee;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.3;
 }
 
