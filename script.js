@@ -355,10 +355,14 @@ function renderParticipants() {
     const headers = document.querySelectorAll('#participantsTable th');
     headers[5].textContent = `Auction Item #${auctionItemCounter}`;
     
-    participants.forEach((participant, index) => {
+    // Sort participants by bucks (highest to lowest)
+    const sortedParticipants = [...participants].sort((a, b) => b.bucks - a.bucks);
+    
+    sortedParticipants.forEach((participant, displayIndex) => {
+        const index = participants.indexOf(participant);
         const row = tbody.insertRow();
         row.innerHTML = `
-            <td><strong>${index + 1}. ${participant.name}</strong></td>
+            <td><strong>${displayIndex + 1}. ${participant.name}</strong></td>
             <td>${participant.hireDate || '-'}</td>
             <td>${participant.years ? participant.years.toFixed(2) : '-'}</td>
             <td><span class="bucks-amount">💰 ${participant.bucks}</span></td>
