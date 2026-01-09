@@ -1,4 +1,4 @@
-const CACHE_NAME = 'banquet-bucks-v3';
+const CACHE_NAME = 'banquet-bucks-v4';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,7 +6,8 @@ const urlsToCache = [
   './styles.css',
   './script.js',
   './voting.js',
-  './manifest.json'
+  './manifest.json',
+  'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js'
 ];
 
 // Install service worker and cache files
@@ -44,7 +45,7 @@ self.addEventListener('fetch', event => {
     fetch(event.request)
       .then(response => {
         // Check if valid response
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+        if (!response || response.status !== 200) {
           return response;
         }
         
